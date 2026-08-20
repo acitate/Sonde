@@ -1,9 +1,10 @@
 import time
-from datetime import datetime
+from datetime import date, datetime
+from traceback import print_tb
 
 import httpx
-
-from .models import ProbeResult
+from icmplib.ping import ping
+from models import ProbeResult  # ty: ignore[unresolved-import]
 
 
 def endpoint_probe_http(
@@ -35,4 +36,27 @@ def endpoint_probe_http(
             timestamp=datetime.now(),
             latency=None,
             method="http",
+        )
+
+
+def endpoint_probe_icmp(endpoint: str, timeout: float = 2) -> ProbeResult:
+    result = ping(address=endpoint, count=4, timeout=timeout, privileged=False)
+
+    if result.is_alive:
+        return ProbeResult(
+            endpoint=endpoint,
+            route="direct",
+            timestamp=datetime.now(),
+            reachable=True,
+            latency=result.avg_rtt,
+            method="icmp",
+        )
+    else:
+        return ProbeResult(
+            endpoint=endpoint,
+            route="direct",
+            timestamp=datetime.now(),
+            reachable=False,
+            latency=None,
+            method="icmp",
         )
