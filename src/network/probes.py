@@ -10,6 +10,19 @@ from models import ProbeResult  # ty: ignore[unresolved-import]
 def endpoint_probe_http(
     endpoint: str, proxy: str | None = None, timeout: float = 5
 ) -> ProbeResult:
+    """Check whether an HTTP endpoint is reachable and measure latency.
+
+    Args:
+        endpoint (str): Endpoint to check.
+        proxy (str | None, optional): Optional proxy:
+            - None: direct connection
+            - "http://127.0.0.1:8080": HTTP proxy
+            - "socks5://127.0.0.1:1080": SOCKS5 proxy
+        timeout (float, optional): Request timeout in seconds. Defaults to 5.
+
+    Returns:
+        ProbeResult
+    """
     try:
         with httpx.Client(
             proxy=proxy, timeout=timeout, follow_redirects=True
@@ -40,6 +53,15 @@ def endpoint_probe_http(
 
 
 def endpoint_probe_icmp(endpoint: str, timeout: float = 2) -> ProbeResult:
+    """Check whether an endpoint is reachable using ICMP.
+
+    Args:
+        endpoint (str): Endpoint to check.
+        timeout (float, optional): Timeout in seconds. Defaults to 2.
+
+    Returns:
+        ProbeResult: _description_
+    """
     result = ping(address=endpoint, count=4, timeout=timeout, privileged=False)
 
     if result.is_alive:
