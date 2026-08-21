@@ -1,6 +1,5 @@
 import time
-from datetime import date, datetime
-from traceback import print_tb
+from datetime import datetime
 
 import httpx
 from icmplib.ping import ping

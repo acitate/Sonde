@@ -13,3 +13,9 @@ class ProbeResult:
     method: Literal["icmp", "http"]
 
 
+@dataclass
+class SpeedTestResult:
+    download_avg_mbps: float
+    run_speeds_mbps: list[float]
+    timestamp: datetime
+    succesful_connections: int
