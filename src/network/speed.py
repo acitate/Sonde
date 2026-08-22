@@ -36,11 +36,11 @@ async def _download_worker(client: httpx.AsyncClient, url: str, max_bytes) -> in
 
 async def download_speed_test(
     urls: list[str],
-    runs: int = 2,
-    connections: int = 2,
-    bytes_per_connection: int = 5 * 1024 * 1024,
-    proxy: str | None = None,
-    timeout: float = 30,
+    runs: int,
+    connections: int,
+    bytes_per_connection: int,
+    proxy: str | None,
+    timeout: float,
 ) -> SpeedTestResult:
     """Measure practical download speed in Mbps.
 

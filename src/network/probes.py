@@ -7,7 +7,7 @@ from models import ProbeResult  # ty: ignore[unresolved-import]
 
 
 def endpoint_probe_http(
-    endpoint: str, proxy: str | None = None, timeout: float = 5
+    endpoint: str, proxy: str | None, timeout: float
 ) -> ProbeResult:
     """Check whether an HTTP endpoint is reachable and measure latency.
 
@@ -51,7 +51,7 @@ def endpoint_probe_http(
         )
 
 
-def endpoint_probe_icmp(endpoint: str, timeout: float = 2) -> ProbeResult:
+def endpoint_probe_icmp(endpoint: str, timeout: float) -> ProbeResult:
     """Check whether an endpoint is reachable using ICMP.
 
     Args:
