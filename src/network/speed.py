@@ -7,7 +7,18 @@ import httpx
 from models import SpeedTestResult  # ty: ignore[unresolved-import]
 
 
-async def _download(client: httpx.AsyncClient, url: str, max_bytes) -> int:
+async def _download_worker(client: httpx.AsyncClient, url: str, max_bytes) -> int:
+    """Download worker. Download up to `max_bytes` from provided URL.
+
+    Args:
+        client (httpx.AsyncClient): Asynchronous HTTP client to use.
+        url (str): URL to the target file.
+        max_bytes (_type_): Number of bytes to download.
+
+    Returns:
+        int: Number of bytes received.
+    """
+
     received = 0
 
     async with client.stream("GET", url=url) as response:
@@ -31,6 +42,26 @@ async def download_speed_test(
     proxy: str | None = None,
     timeout: float = 30,
 ) -> SpeedTestResult:
+    """Measure practical download speed in Mbps.
+
+    The returned speed is the median aggregate throughput of all
+    successful runs.
+
+    A run is considered successful if at least one connection
+    successfully transfers data.
+
+    Args:
+        urls (list[str]): URLs of sufficiently large files. Treated as a pool. Assigned to connections in round-robin.
+        runs (int, optional): Number of sequential runs. Defaults to 2.
+        connections (int, optional): Number of concurrent connections to start in each run. Defaults to 2.
+        bytes_per_connection (int, optional): Maximum bytes to download in each connection. Defaults to 5*1024*1024 = 5MB
+        proxy (str | None, optional): Optional socks/http proxy. Defaults to None.
+        timeout (float, optional): Download timeout in seconds. Defaults to 30.
+
+    Returns:
+        SpeedTestResult
+    """
+
     speeds = []
     successful_connections = 0
     total_connections = 0
@@ -44,7 +75,7 @@ async def download_speed_test(
             test_urls = [urls[i % len(urls)] for i in range(connections)]
 
             tasks = [
-                _download(client, url=url, max_bytes=bytes_per_connection)
+                _download_worker(client, url=url, max_bytes=bytes_per_connection)
                 for url in test_urls
             ]
 
