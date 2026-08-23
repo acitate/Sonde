@@ -1,5 +1,7 @@
-from models import Config
-from settings import *
+from .models import Config
+from .settings import *
+
+# Parses config.toml if there is one and overloads the default values
 
 
 def load_config() -> Config:

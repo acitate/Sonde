@@ -3,7 +3,8 @@ from datetime import datetime
 
 import httpx
 from icmplib.ping import ping
-from models import ProbeResult  # ty: ignore[unresolved-import]
+
+from .models import ProbeResult
 
 
 def endpoint_probe_http(

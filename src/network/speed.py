@@ -4,7 +4,8 @@ import time
 from datetime import datetime
 
 import httpx
-from models import SpeedTestResult  # ty: ignore[unresolved-import]
+
+from .models import SpeedTestResult
 
 
 async def _download_worker(client: httpx.AsyncClient, url: str, max_bytes) -> int:
