@@ -7,15 +7,18 @@ from typing import Literal
 class ProbeResult:
     endpoint: str
     route: Literal["direct", "proxy"]
+    method: Literal["icmp", "http"]
     timestamp: datetime
     reachable: bool
-    latency: float | None
-    method: Literal["icmp", "http"]
+    latency_ms: float | None
+    error: str | None = None
 
 
 @dataclass
 class SpeedTestResult:
-    download_avg_mbps: float
+    median_speed_mbps: float
     run_speeds_mbps: list[float]
+    route: Literal["direct", "proxy"]
     timestamp: datetime
     succesful_connections: int
+    total_connections: int
