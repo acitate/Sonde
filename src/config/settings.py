@@ -13,3 +13,6 @@ DEFAULT_SPEEDTEST_RUNS = 2                                                # numb
 DEFAULT_SPEEDTEST_CONNECTIONS = 3                                         # number of parallel connections in each run
 DEFAULT_SPEEDTEST_PROXY = None
 DEFAULT_SPEEDTEST_DOWNLOAD_BYTES = 5 * 1024 * 1024      # maximum number of bytes to download in each connection
+
+# default database path
+DEFAULT_DB_PATH = "./data/storage.db"

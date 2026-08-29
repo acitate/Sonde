@@ -1,3 +1,4 @@
+from pathlib import Path
 from dataclasses import dataclass
 
 
@@ -11,3 +12,5 @@ class Config:
     speedtest_connections: int
     speedtest_proxy: str | None
     speedtest_download_bytes: int
+
+    database_path: str | Path
