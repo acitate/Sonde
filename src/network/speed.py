@@ -2,6 +2,7 @@ import asyncio
 import statistics
 import time
 from datetime import datetime
+from operator import is_none
 
 import httpx
 
@@ -99,8 +100,10 @@ async def download_speed_test(
                 speeds.append(mbps)
 
     return SpeedTestResult(
-        download_avg_mbps=statistics.median(speeds),
+        median_speed_mbps=statistics.median(speeds),
         run_speeds_mbps=speeds,
         timestamp=datetime.now(),
         succesful_connections=successful_connections,
+        total_connections=total_connections,
+        route= "direct" if is_none(proxy) else "proxy"
     )
