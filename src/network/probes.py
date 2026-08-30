@@ -29,7 +29,7 @@ def endpoint_probe_http(
         ) as client:
             start = time.perf_counter()
 
-            response = client.get(endpoint)
+            response = client.head(endpoint)
 
             end = time.perf_counter()
 
@@ -38,7 +38,7 @@ def endpoint_probe_http(
                 route="proxy" if proxy else "direct",
                 timestamp=datetime.now(),
                 reachable=True,
-                latency=end - start,
+                latency_ms=end - start,
                 method="http",
             )
     except httpx.HTTPError, OSError:
@@ -47,7 +47,7 @@ def endpoint_probe_http(
             route="proxy" if proxy else "direct",
             reachable=False,
             timestamp=datetime.now(),
-            latency=None,
+            latency_ms=None,
             method="http",
         )
 
@@ -70,7 +70,7 @@ def endpoint_probe_icmp(endpoint: str, timeout: float) -> ProbeResult:
             route="direct",
             timestamp=datetime.now(),
             reachable=True,
-            latency=result.avg_rtt,
+            latency_ms=result.avg_rtt,
             method="icmp",
         )
     else:
@@ -79,6 +79,6 @@ def endpoint_probe_icmp(endpoint: str, timeout: float) -> ProbeResult:
             route="direct",
             timestamp=datetime.now(),
             reachable=False,
-            latency=None,
+            latency_ms=None,
             method="icmp",
         )
