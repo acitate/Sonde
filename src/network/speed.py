@@ -105,5 +105,5 @@ async def download_speed_test(
         timestamp=datetime.now(),
         succesful_connections=successful_connections,
         total_connections=total_connections,
-        route= "direct" if is_none(proxy) else "proxy"
+        route= "direct" if proxy is None else "proxy"
     )

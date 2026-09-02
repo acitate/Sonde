@@ -41,7 +41,7 @@ def endpoint_probe_http(
                 latency_ms=end - start,
                 method="http",
             )
-    except httpx.HTTPError, OSError:
+    except (httpx.HTTPError, OSError):
         return ProbeResult(
             endpoint=endpoint,
             route="proxy" if proxy else "direct",
