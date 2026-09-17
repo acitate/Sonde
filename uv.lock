@@ -84,7 +84,7 @@ wheels = [
 ]
 
 [[package]]
-name = "pynetradar"
+name = "sonde"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
