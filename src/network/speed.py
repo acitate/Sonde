@@ -103,7 +103,7 @@ async def download_speed_test(
         median_speed_mbps=statistics.median(speeds),
         run_speeds_mbps=speeds,
         timestamp=datetime.now(),
-        succesful_connections=successful_connections,
+        successful_connections=successful_connections,
         total_connections=total_connections,
         route= "direct" if proxy is None else "proxy"
     )

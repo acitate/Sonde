@@ -20,5 +20,5 @@ class SpeedTestResult:
     run_speeds_mbps: list[float]
     route: Literal["direct", "proxy"]
     timestamp: datetime
-    succesful_connections: int
+    successful_connections: int
     total_connections: int
