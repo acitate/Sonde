@@ -38,7 +38,7 @@ def endpoint_probe_http(
                 route="proxy" if proxy else "direct",
                 timestamp=datetime.now(),
                 reachable=True,
-                latency_ms=end - start,
+                latency_ms=(end - start) * 1000,
                 method="http",
             )
     except (httpx.HTTPError, OSError):
