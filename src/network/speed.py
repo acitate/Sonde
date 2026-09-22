@@ -2,7 +2,6 @@ import asyncio
 import statistics
 import time
 from datetime import datetime
-from operator import is_none
 
 import httpx
 
@@ -64,6 +63,9 @@ async def download_speed_test(
         SpeedTestResult
     """
 
+    if not urls:
+        raise ValueError("speed-test cannot run with zero URLs")
+
     speeds = []
     successful_connections = 0
     total_connections = 0
@@ -89,7 +91,7 @@ async def download_speed_test(
 
             run_bytes = 0
             for result in results:
-                if isinstance(result, int):
+                if isinstance(result, int) and result > 0:
                     run_bytes += result
                     successful_connections += 1
                 total_connections += 1
@@ -99,11 +101,13 @@ async def download_speed_test(
 
                 speeds.append(mbps)
 
+    median_speed = statistics.median(speeds) if speeds else 0.0
+
     return SpeedTestResult(
-        median_speed_mbps=statistics.median(speeds),
+        median_speed_mbps=median_speed,
         run_speeds_mbps=speeds,
         timestamp=datetime.now(),
         successful_connections=successful_connections,
         total_connections=total_connections,
-        route= "direct" if proxy is None else "proxy"
+        route="direct" if proxy is None else "proxy",
     )
