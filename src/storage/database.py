@@ -14,15 +14,28 @@ def create_database(path: str | Path) -> sqlite3.Connection:
     db_path = Path(path)
     db_path.parent.mkdir(parents=True, exist_ok=True)
 
-    return sqlite3.connect(db_path)
+    connection = sqlite3.connect(db_path)
+    connection.row_factory = sqlite3.Row
+    return connection
 
 
 def initialize_database(connection: sqlite3.Connection) -> None:
-    """Initialize the application schema if it doesn't exist. 
+    """Initialize the application schema if it doesn't exist.
+
+    Initialization requires a connection without an active transaction because
+    ``executescript`` may implicitly commit before running the schema script.
 
     Args:
         connection ( sqlite3.Connection ): Connection to the application database.
+
+    Raises:
+        RuntimeError: If the connection already has an active transaction.
     """
+    if connection.in_transaction:
+        raise RuntimeError(
+            "cannot initialize the database while a transaction is active"
+        )
+
     connection.executescript(
         """
         PRAGMA foreign_keys = ON;
