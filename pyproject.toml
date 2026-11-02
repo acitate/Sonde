@@ -8,3 +8,14 @@ dependencies = [
     "httpx[socks]>=0.28.1",
     "icmplib>=3.0.4",
 ]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "pytest-asyncio>=1.4.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+asyncio_mode = "auto"
