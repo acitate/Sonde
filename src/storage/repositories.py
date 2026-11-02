@@ -838,8 +838,8 @@ class Repository:
 
         Raises:
             ValueError: If ``timestamp`` is naive, or if ``run_speeds`` is not
-                ``None`` and its length does not match the referenced config's
-                ``runs`` value.
+                ``None`` and is longer than the referenced config's ``runs``
+                value.
             ConstraintError: If the row violates a constraint.
         """
         with self._transaction():
@@ -848,10 +848,10 @@ class Repository:
             ).fetchone()
             if config_row is not None and run_speeds is not None:
                 expected_runs = config_row["runs"]
-                if len(run_speeds) != expected_runs:
+                if len(run_speeds) > expected_runs:
                     raise ValueError(
-                        "run_speeds length must match the config's runs value "
-                        f"({expected_runs})"
+                        "run_speeds length must not exceed the config's runs "
+                        f"value ({expected_runs})"
                     )
 
             speed_test_id = self._execute(

@@ -1,5 +1,5 @@
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 
 import httpx
 from icmplib.ping import ping
@@ -36,7 +36,7 @@ def endpoint_probe_http(
             return ProbeResult(
                 endpoint=endpoint,
                 route="proxy" if proxy else "direct",
-                timestamp=datetime.now(),
+                timestamp=datetime.now(timezone.utc),
                 reachable=True,
                 latency_ms=(end - start) * 1000,
                 method="http",
@@ -46,7 +46,7 @@ def endpoint_probe_http(
             endpoint=endpoint,
             route="proxy" if proxy else "direct",
             reachable=False,
-            timestamp=datetime.now(),
+            timestamp=datetime.now(timezone.utc),
             latency_ms=None,
             method="http",
         )
@@ -68,7 +68,7 @@ def endpoint_probe_icmp(endpoint: str, timeout: float) -> ProbeResult:
         return ProbeResult(
             endpoint=endpoint,
             route="direct",
-            timestamp=datetime.now(),
+            timestamp=datetime.now(timezone.utc),
             reachable=True,
             latency_ms=result.avg_rtt,
             method="icmp",
@@ -77,7 +77,7 @@ def endpoint_probe_icmp(endpoint: str, timeout: float) -> ProbeResult:
         return ProbeResult(
             endpoint=endpoint,
             route="direct",
-            timestamp=datetime.now(),
+            timestamp=datetime.now(timezone.utc),
             reachable=False,
             latency_ms=None,
             method="icmp",
