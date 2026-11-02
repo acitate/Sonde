@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from typing import Literal
+from collections.abc import Awaitable, Callable
 
 
 @dataclass
@@ -28,3 +29,10 @@ class SpeedTestConfig:
     timeout: float
     proxy_id: int | None
     active: bool
+
+
+@dataclass
+class ScheduledJob:
+    name: str
+    interval: float
+    callback: Callable[[], Awaitable[None]]

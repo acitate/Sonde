@@ -1,17 +1,10 @@
 import asyncio
 import logging
-from collections.abc import Awaitable, Callable
-from dataclasses import dataclass
+
+from monitor.models import ScheduledJob
 
 
 logger = logging.getLogger(__name__)
-
-
-@dataclass
-class ScheduledJob:
-    name: str
-    interval: float
-    callback: Callable[[], Awaitable[None]]
 
 
 class Scheduler:
@@ -24,7 +17,7 @@ class Scheduler:
         self,
         name: str,
         interval: float,
-        callback: Callable[[], Awaitable[None]],
+        callback,
     ) -> None:
         if interval <= 0:
             raise ValueError("Job interval must be positive")
